@@ -12,7 +12,7 @@ public class Server {
 	
 	public static void main(String args[]) throws IOException {
 		final int portNumber = 7789;
-		String filename = "src\\testfile.txt";
+		String filename = "Java\\src\\testfile.txt";
 		ArrayList<String> array = new ArrayList<String>();
 		
 		System.out.println("Creating server socket on port " + portNumber);
