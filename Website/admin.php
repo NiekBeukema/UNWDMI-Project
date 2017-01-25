@@ -22,8 +22,9 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="js/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
-      <link href="css/style.css" rel="stylesheet">
-      <link href="css/style1.css" rel="stylesheet">
+    <link href="https://hencework.com/theme/kenny/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style1.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -95,7 +96,6 @@
                                 <label class="control-label mb-10 text-left">Username</label>
                                 <input type="text" name="username" class="form-control" placeholder="Username"/>
                               </div>
-                              <!-- TODO: Removed styles for checkboxes need to be added back, Niek. -->
                               <div class="form-group">
                                   <div class="checkbox checkbox-primary">
                                       <input type="checkbox" id="admin"/>
@@ -129,7 +129,15 @@
                   </div>
                   <div class="panel-wrapper collapse in">
                       <div class="panel-body">
-                          <p>YOYOYO</p>
+                          <form action="#">
+                              <div class="form-group">
+                                  <label class="control-label mb-10">Select box</label>
+                                  <select class="selectpicker" data-style="form-control">
+                                      <option>Mustard</option>
+                                      <option>Ketchup</option>
+                                      <option>Relish</option>
+                                  </select>
+                          </form>
                       </div>
                   </div>
               </div>
@@ -151,6 +159,7 @@
 
   <script src="js/datatables.net-buttons/js/buttons.html5.min.js"></script>
   <script src="js/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="https://hencework.com/theme/kenny/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
   <script src="js/export-table-data.js"></script>
   <script src="js/jszip/dist/jszip.min.js"></script>
   <script src="js/pdfmake/build/pdfmake.min.js"></script>
