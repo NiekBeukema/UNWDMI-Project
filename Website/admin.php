@@ -109,14 +109,14 @@
                             </div>
                             <div class="panel-wrapper collapse in">
                                 <div class="panel-body">
-                                    <form action="#">
+                                    <form method="post" action="">
                                         <div class="form-group">
                                             <label class="control-label mb-10 text-left">Username</label>
                                             <input type="text" name="username" class="form-control" placeholder="Username"/>
                                         </div>
                                         <div class="form-group">
                                             <div class="checkbox checkbox-primary">
-                                                <input type="checkbox" id="admin"/>
+                                                <input type="checkbox" name="admin"/>
                                                 <label for="admin">Is this user an administrator?</label>
                                             </div>
                                         </div>
@@ -125,7 +125,7 @@
                                         </div>
                                         <div class="form-group mb-0">
                                             <div class="col-sm-2">
-                                                <button class="btn btn-success">
+                                                <button type="submit" name="submit" class="btn btn-success">
                                                     <span class="btn-text">Submit</span>
                                                 </button>
                                             </div>
