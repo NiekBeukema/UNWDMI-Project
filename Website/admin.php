@@ -1,3 +1,24 @@
+<?php
+
+require_once('db_connect.php');
+
+if(isset($_POST['createUser'])) {
+
+    $username = trim($_POST['username']);
+
+    if(isset($_POST['is_admin'])) {
+        $is_admin = 1;
+    } else {
+        $is_admin = 0;
+    }
+
+    $pass = rand();
+    $pass = password_hash($pass, PASSWORD_DEFAULT);
+
+    $insertUser = $db->prepare("INSERT INTO members(username, is_admin, pw_hash) VALUES (?, ?, ?)");
+    $insertUser->execute(array($username, $is_admin, $pass));
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,7 +137,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="checkbox checkbox-primary">
-                                                <input type="checkbox" name="admin"/>
+                                                <input type="checkbox" name="is_admin"/>
                                                 <label for="admin">Is this user an administrator?</label>
                                             </div>
                                         </div>
@@ -125,12 +146,31 @@
                                         </div>
                                         <div class="form-group mb-0">
                                             <div class="col-sm-2">
-                                                <button type="submit" name="submit" class="btn btn-success">
+                                                <button type="submit" name="createUser" class="btn btn-success">
                                                     <span class="btn-text">Submit</span>
                                                 </button>
                                             </div>
                                         </div>
                                     </form>
+                                    <?php
+
+                                        // Debug, Debug Debug //
+
+//                                        if(isset($_POST['createUser'])) {
+//                                            echo '<pre>';
+//                                            echo print_r($_POST);
+//                                            echo '</pre>';
+//                                        }
+
+//                                        if(isset($_POST['submit'])) {
+//                                            $test = $db->prepare('Select * from weatherdata limit 2');
+//                                            $test->execute();
+//                                            $result = $test->fetchAll();
+//                                            echo '<pre>';
+//                                            echo print_r($result);
+//                                            echo '</pre>';
+//                                        }
+                                    ?>
                                 </div>
                             </div>
                         </div>
