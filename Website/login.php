@@ -34,16 +34,17 @@ if (login_check($pdo) == true) {
 </div>
 <!--/Preloader-->
 
-<div class="wrapper pa-0">
+
+<div class="wrapper">
     <!-- Top Menu Items -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
-        <a href="index.html"><img class="brand-img pull-left" src="logo.png" alt="brand"/></a>
+        <a href="#"><img class="brand-img pull-left" src="logo.png" alt="brand"/></a>
         <ul class="nav navbar-right top-nav pull-right">
         </ul>
     </nav>
     <!-- /Top Menu Items -->
     <!-- Main Content -->
-    <div class="page-wrapper pa-0 ma-0">
+    <div class="page-wrapper ma-0">
         <div class="container-fluid">
             <!-- Row -->
             <div class="table-struct full-width full-height">
@@ -52,9 +53,9 @@ if (login_check($pdo) == true) {
                         <div class="panel panel-default card-view mb-0">
                             <div class="panel-heading">
                                 <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">Sign In - testuser:debugpass ||| <?php echo password_hash("debugpass", PASSWORD_DEFAULT)."\n"; ?> <?php
+                                    <h6 class="panel-title txt-dark">Sign In<?php
                                         if (isset($_GET['error'])) {
-                                            echo '<p class="error">Error Logging In!</p>';
+                                            echo '<p>Error Logging In!</p>';
                                         }
                                         ?> </h6>
                                 </div>

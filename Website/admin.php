@@ -1,6 +1,23 @@
 <?php
-//TODO Fix admin shit maar het is laat en ik ga slapen
-require_once('db_connect.php');
+//FIXME VOEG EEN CHECK TOE DIE CHECKT OF ER WEL IETS IS INGEVULD OMG
+require_once('config/db_connect.php');
+require_once('lib/random.php');
+
+//Secure random password generation
+function generate_pass(
+    $length,
+    $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&**()'
+) {
+    $str = '';
+    $max = mb_strlen($keyspace, '8bit') - 1;
+    if ($max < 1) {
+        throw new Exception('$keyspace must be at least two characters long');
+    }
+    for ($i = 0; $i < $length; ++$i) {
+        $str .= $keyspace[random_int(0, $max)];
+    }
+    return $str;
+}
 
 if(isset($_POST['createUser'])) {
 
@@ -12,11 +29,41 @@ if(isset($_POST['createUser'])) {
         $is_admin = 0;
     }
 
-    $pass = rand();
-    $pass = password_hash($pass, PASSWORD_DEFAULT);
+    $passwordnc = generate_pass(10);
+    $password = password_hash($passwordnc, PASSWORD_DEFAULT);
 
-    $insertUser = $db->prepare("INSERT INTO members(username, is_admin, pw_hash) VALUES (?, ?, ?)");
-    $insertUser->execute(array($username, $is_admin, $pass));
+    $query = "
+            INSERT INTO users (
+                username,
+                password,
+                is_admin
+            ) VALUES (
+                :username,
+                :password,
+                :is_admin
+            )
+        ";
+
+    $username = $_POST['username'];
+    $query_params = array(
+        ':username' => $username,
+        ':password' => $password,
+        ':is_admin' => $is_admin
+    );
+
+    try
+    {
+        // Execute the query to create the user
+        $stmt = $pdo->prepare($query);
+        $result = $stmt->execute($query_params);
+    }
+    catch(PDOException $ex)
+    {
+        // Note: On a production website, you should not output $ex->getMessage().
+        // It may provide an attacker with helpful information about your code.
+        die();
+        header("Location: ../error.php?err=Couldn't connect to database(conn_reguser)");
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -142,12 +189,12 @@ if(isset($_POST['createUser'])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <h6>A random password will be generated</h6>
+                                            <h6><?php if(isset($_POST['createUser'])) { echo 'The user with name: '. $username . ' with password: ' . $passwordnc . ' has been created' ;} else { echo 'A random password will generator!';} ?></h6>
                                         </div>
                                         <div class="form-group mb-0">
                                             <div class="col-sm-2">
                                                 <button type="submit" name="createUser" class="btn btn-success">
-                                                    <span class="btn-text">Submit</span>
+                                                    <span class="btn-text swal-btn-success">Submit</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -264,6 +311,11 @@ if(isset($_POST['createUser'])) {
 
 <!-- ChartJS JavaScript -->
 <script src="vendors/chart.js/Chart.min.js"></script>
+
+<!-- Sweet-Alert  -->
+<script src="vendors/bower_components/sweetalert/dist/sweetalert.min.js"></script>
+
+<script src="dist/js/sweetalert-data.js"></script>
 
 <!-- Init JavaScript -->
 <script src="dist/js/init.js"></script>

@@ -2,17 +2,17 @@
 
 include_once 'db_conf.php';
 
-//Some of the functions below are based on Peter Bradley's secure session code. TODO: REMOVE ECHO EN DEBUG
+//Some of the functions below are based on Peter Bradley's secure session code.
 
 function sec_session_start() {
-    //TODO Create error pages
     $session_name = 'sec_session_id';   // Set a custom session name
     /*Sets the session name.
      *This must come before session_set_cookie_params due to an undocumented bug/feature in PHP.
      */
     session_name($session_name);
 
-    $secure = true;
+    $secure = false; //FIXME ONLY ON HTTPS
+
     // This stops JavaScript being able to access the session id.
     $httponly = true;
     // Forces sessions to only use cookies.
@@ -49,9 +49,9 @@ function login($username, $password, $pdo) {
     }
     catch(PDOException $ex)
     {
-        // Note: On a production website, you should not output $ex->getMessage().
-        // It may provide an attacker with helpful information about your code.
-        die("Failed to run login query: " . $ex->getMessage());
+        // To debug: . $ex->getMessage().
+        die();
+        header("Location: ../error.php?err=Could not connect to database (conn_login)");
     }
     $row = $stmt->fetch();
 
@@ -91,12 +91,24 @@ function login($username, $password, $pdo) {
                     return true;
                 } else {
                     // Password is not correct
-                    // We record this attempt in the database TODO: Fix this
                     $now = time();
-                    $pdo->execute("INSERT INTO login_attempts(user_id, time)
-                                    VALUES ('$user_id', '$now')");
+                    $query = "INSERT INTO login_attempts(user_id, time)
+                                    VALUES (:user_id, :time)";
+                    $query_params = array(
+                        ':user_id' => $user_id,
+                        ':time' => $now,
+                    );
+                    try
+                    {
+                        $stmt = $pdo->prepare($query);
+                        $result = $stmt->execute($query_params);
+                    }
+                    catch(PDOException $ex)
+                    {
+                        die();
+                        header("Location: ../error.php?err=Could not connect to database (conn_log_attempts)");
+                    }
                     return false;
-                    echo 'login verify error';
                 }
             }
         } else {
@@ -127,16 +139,15 @@ function checkbrute($user_id, $pdo) {
     }
     catch(PDOException $ex)
     {
-        // Note: On a production website, you should not output $ex->getMessage().
-        // It may provide an attacker with helpful information about your code.
-        die("Failed to run bruteforce query: " . $ex->getMessage());
+        die();
+        header("Location: ../error.php?err=Could not connect to database (conn_check_attempts)");
     }
 
     $row = $stmt->fetch();
 
     if ($row) {
         // If there have been more than 5 failed logins
-        if ($row->num_rows > 5) {
+        if (count($row) > 5) {
             return true;
         } else {
             return false;
@@ -194,16 +205,15 @@ function login_check($pdo) {
         try
         {
             // Execute the query against the database
-            $stmt = $db->prepare("SELECT password 
+            $stmt = $pdo->prepare("SELECT password 
                                       FROM users 
-                                      WHERE id = :user_id LIMIT 1");
+                                      WHERE id = :user_id");
             $result = $stmt->execute($query_params);
         }
         catch(PDOException $ex)
         {
-            // Note: On a production website, you should not output $ex->getMessage().
-            // It may provide an attacker with helpful information about your code.
-            die("Failed to run check query: " . $ex->getMessage());
+            die();
+            header("Location: ../error.php?err=Couldn't initiate a safe session(ini_set_dbcheck");
         }
 
         $row = $stmt->fetch();
@@ -229,3 +239,4 @@ function login_check($pdo) {
         //end
 
 }
+

@@ -9,11 +9,10 @@ if (isset($_POST['username'], $_POST['password'])) {
     $password = $_POST['password']; // The hashed password.
 
     if (login($username, $password, $pdo) == true) {
-        // Login success TODO: REDIRECT
-        echo 'Login Valid';
+        header('Location: index.php');
     } else {
         // Login failed
-        echo 'DEBUG: Login failed';
+        header('Location: ../login.php?error=1');
     }
 } else {
     // The correct POST variables were not sent to this page.
