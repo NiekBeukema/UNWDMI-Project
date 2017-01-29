@@ -1,70 +1,7 @@
 <?php
-//FIXME VOEG EEN CHECK TOE DIE CHECKT OF ER WEL IETS IS INGEVULD OMG
-require_once('config/db_connect.php');
-require_once('lib/random.php');
-
-//Secure random password generation
-function generate_pass(
-    $length,
-    $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&**()'
-) {
-    $str = '';
-    $max = mb_strlen($keyspace, '8bit') - 1;
-    if ($max < 1) {
-        throw new Exception('$keyspace must be at least two characters long');
-    }
-    for ($i = 0; $i < $length; ++$i) {
-        $str .= $keyspace[random_int(0, $max)];
-    }
-    return $str;
-}
-
-if(isset($_POST['createUser'])) {
-
-    $username = trim($_POST['username']);
-
-    if(isset($_POST['is_admin'])) {
-        $is_admin = 1;
-    } else {
-        $is_admin = 0;
-    }
-
-    $passwordnc = generate_pass(10);
-    $password = password_hash($passwordnc, PASSWORD_DEFAULT);
-
-    $query = "
-            INSERT INTO users (
-                username,
-                password,
-                is_admin
-            ) VALUES (
-                :username,
-                :password,
-                :is_admin
-            )
-        ";
-
-    $username = $_POST['username'];
-    $query_params = array(
-        ':username' => $username,
-        ':password' => $password,
-        ':is_admin' => $is_admin
-    );
-
-    try
-    {
-        // Execute the query to create the user
-        $stmt = $pdo->prepare($query);
-        $result = $stmt->execute($query_params);
-    }
-    catch(PDOException $ex)
-    {
-        // Note: On a production website, you should not output $ex->getMessage().
-        // It may provide an attacker with helpful information about your code.
-        die();
-        header("Location: ../error.php?err=Couldn't connect to database(conn_reguser)");
-    }
-}
+//TODO voeg is_admin validation toe aan deze pagina
+require_once('config/functions.php');
+require_once('config/register.inc.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,8 +20,14 @@ if(isset($_POST['createUser'])) {
 
     <link href="vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css" rel="stylesheet" type="text/css">
 
+
+    <!--alerts CSS -->
+    <link href="vendors/bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css">
     <!-- Custom CSS -->
     <link href="dist/css/style.css" rel="stylesheet" type="text/css">
+
+    <script src="vendors/bower_components/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 
 <body>
@@ -180,7 +123,7 @@ if(isset($_POST['createUser'])) {
                                     <form method="post" action="">
                                         <div class="form-group">
                                             <label class="control-label mb-10 text-left">Username</label>
-                                            <input type="text" name="username" class="form-control" placeholder="Username"/>
+                                            <input type="text" name="username" class="form-control" required="" placeholder="Username"/>
                                         </div>
                                         <div class="form-group">
                                             <div class="checkbox checkbox-primary">
@@ -189,7 +132,18 @@ if(isset($_POST['createUser'])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <h6><?php if(isset($_POST['createUser'])) { echo 'The user with name: '. $username . ' with password: ' . $passwordnc . ' has been created' ;} else { echo 'A random password will generator!';} ?></h6>
+                                            <h6><?php
+                                                if($success==3){
+                                                    echo '<script>swal("User created!", " ' .'Username: [ '.$username. ' ] with Password: [ '.$passwordns.' ]'.'  ", "success")</script>';
+                                                    echo "A random password will be generated and displayed after creation.";
+                                                } elseif($success==2) {
+                                                    echo '<script>swal("Oops...", "Could not add user to the database!", "error");</script>';
+                                                    echo "A random password will be generated and displayed after creation.";
+                                                } else {
+                                                    echo "A random password will be generated and displayed after creation.";
+                                                }
+
+                                                ?></h6>
                                         </div>
                                         <div class="form-group mb-0">
                                             <div class="col-sm-2">
