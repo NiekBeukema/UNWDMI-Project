@@ -1,5 +1,5 @@
 <?php
-
+//TODO Fix admin shit maar het is laat en ik ga slapen
 require_once('db_connect.php');
 
 if(isset($_POST['createUser'])) {
