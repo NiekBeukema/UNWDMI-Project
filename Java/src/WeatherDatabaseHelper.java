@@ -27,6 +27,14 @@ public class WeatherDatabaseHelper {
 
     }
 
+    public void insertOceaniaData(int stationId, Float cloudcoverage) {
+        mySql.insertQuery("INSERT INTO oceania (stationId, cloudcoverage) VALUES(" + stationId + ", " + cloudcoverage.toString() + ")");
+    }
+
+    public void insertArgentinaData(int stationId, Float cloudcoverage, Float visibility) {
+        mySql.insertQuery("INSERT INTO argentina (stationId, visibility, cloudcoverage) VALUES(" + stationId + ", " + visibility.toString() + ", " + cloudcoverage.toString() + ")");
+    }
+
     public void purgeDataBase() {
         System.out.println("Purging database");
         mySql.delete("station", "", true);

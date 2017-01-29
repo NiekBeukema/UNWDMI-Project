@@ -13,7 +13,7 @@ import org.xml.sax.InputSource;
 public class Server {
 	
 	public static void main(String args[]) throws IOException {
-		MySql sql = new MySql("127.0.0.1", 3306, "unwdmi", "root", "vtl54711");
+		MySql sql = new MySql("127.0.0.1", 3306, "iica", "vtl54711", "root");
 		WeatherDatabaseHelper database = new WeatherDatabaseHelper(sql);
 		final int portNumber = 7789;
 		String filename = "Java\\src\\testfile.txt";
@@ -58,19 +58,26 @@ public class Server {
 					int station = Integer.valueOf(element.getElementsByTagName("STN").item(0).getTextContent());
 					String date = element.getElementsByTagName("DATE").item(0).getTextContent();
 					String time = element.getElementsByTagName("TIME").item(0).getTextContent();
-					Float temperature = Float.valueOf(element.getElementsByTagName("TEMP").item(0).getTextContent());
-					Float dewpoint = Float.valueOf(element.getElementsByTagName("DEWP").item(0).getTextContent());
-					Float pressure = Float.valueOf(element.getElementsByTagName("STP").item(0).getTextContent());
+					Float temperature = Float.parseFloat(element.getElementsByTagName("TEMP").item(0).getTextContent().replace("\"", ""));
+					Float dewpoint = Float.parseFloat(element.getElementsByTagName("DEWP").item(0).getTextContent().replace("\"", ""));
+					Float pressure = Float.parseFloat(element.getElementsByTagName("STP").item(0).getTextContent().replace("\"", ""));
 					String slp = element.getElementsByTagName("SLP").item(0).getTextContent();
-					int visibility = Integer.valueOf(element.getElementsByTagName("VISIB").item(0).getTextContent());
-					Float windspeed = Float.valueOf(element.getElementsByTagName("WDSP").item(0).getTextContent());
-					String prcp = element.getElementsByTagName("PRCP").item(0).getTextContent();
-					String snowdepth = element.getElementsByTagName("SNDP").item(0).getTextContent();
-					String frshtt = element.getElementsByTagName("FRSHTT").item(0).getTextContent();
-					String cloudcoverage = element.getElementsByTagName("CLDC").item(0).getTextContent();
-					String winddirection = element.getElementsByTagName("WNDDIR").item(0).getTextContent();
+					Float visibility = Float.parseFloat(element.getElementsByTagName("VISIB").item(0).getTextContent().replace("\"", ""));
+					Float windspeed = Float.parseFloat(element.getElementsByTagName("WDSP").item(0).getTextContent().replace("\"", ""));
+					Float prcp = Float.parseFloat(element.getElementsByTagName("PRCP").item(0).getTextContent());
+					Float snowdepth = Float.parseFloat(element.getElementsByTagName("SNDP").item(0).getTextContent());
+					int frshtt = Integer.valueOf(element.getElementsByTagName("FRSHTT").item(0).getTextContent());
+					Float cloudcoverage = Float.parseFloat(element.getElementsByTagName("CLDC").item(0).getTextContent());
+					int winddirection = Integer.valueOf(element.getElementsByTagName("WNDDIR").item(0).getTextContent());
 
-					database.insertWeahterData();
+					//database.insertWeahterData();
+					if(station < 500000) {
+						database.insertOceaniaData(station, cloudcoverage);
+					}
+
+					else {
+						database.insertArgentinaData(station, cloudcoverage, visibility);
+					}
 					System.out.println(date);
 				}
 			}
