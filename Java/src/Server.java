@@ -13,90 +13,10 @@ import org.xml.sax.InputSource;
 public class Server {
 	
 	public static void main(String args[]) throws IOException {
-		MySql sql = new MySql("127.0.0.1", 3306, "iica", "vtl54711", "root");
-		WeatherDatabaseHelper database = new WeatherDatabaseHelper(sql);
-		final int portNumber = 7789;
-		String filename = "Java\\src\\testfile.txt";
-		ArrayList<String> array = new ArrayList<String>();
-		
-		System.out.println("Creating server socket on port " + portNumber);
-		ServerSocket serverSocket = new ServerSocket(portNumber);
+		Receiver receiver = new Receiver(7789, "127.0.0.1", 3306, "root", "vtl54711", "iica");
+		receiver.receive();
+		receiver.write();
 
-		while (true) {
-			//accept socket connection
-			Socket socket = serverSocket.accept();
-			String str = "";
-			//get inputstream
-			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			StringBuilder builder = new StringBuilder();
-			//read input data
-			while (!str.contains("</MEASUREMENT>")) {
-				str = br.readLine();
-
-				builder.append(str);
-				array.add(str);
-			}			
-			
-			//close socket for new connection
-			socket.close();
-			
-			//write data to tekstfile from array
-			try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true))){
-			    bw.write(builder.toString());
-			    bw.newLine();
-			}
-			
-			//System.out.println(array);
-			try {
-				builder.append("</WEATHERDATA>");
-				String xmlString = builder.toString();
-				xmlString = xmlString.replace("\t", "");
-				Document xml = loadXMLFromString(xmlString);
-				NodeList nList = xml.getElementsByTagName("MEASUREMENT");
-				for(int i=0; i < nList.getLength(); i++) {
-					Element element = (Element) nList.item(i);
-					int station = Integer.valueOf(element.getElementsByTagName("STN").item(0).getTextContent());
-					String date = element.getElementsByTagName("DATE").item(0).getTextContent();
-					String time = element.getElementsByTagName("TIME").item(0).getTextContent();
-					Float temperature = Float.parseFloat(element.getElementsByTagName("TEMP").item(0).getTextContent().replace("\"", ""));
-					Float dewpoint = Float.parseFloat(element.getElementsByTagName("DEWP").item(0).getTextContent().replace("\"", ""));
-					Float pressure = Float.parseFloat(element.getElementsByTagName("STP").item(0).getTextContent().replace("\"", ""));
-					String slp = element.getElementsByTagName("SLP").item(0).getTextContent();
-					Float visibility = Float.parseFloat(element.getElementsByTagName("VISIB").item(0).getTextContent().replace("\"", ""));
-					Float windspeed = Float.parseFloat(element.getElementsByTagName("WDSP").item(0).getTextContent().replace("\"", ""));
-					Float prcp = Float.parseFloat(element.getElementsByTagName("PRCP").item(0).getTextContent());
-					Float snowdepth = Float.parseFloat(element.getElementsByTagName("SNDP").item(0).getTextContent());
-					int frshtt = Integer.valueOf(element.getElementsByTagName("FRSHTT").item(0).getTextContent());
-					Float cloudcoverage = Float.parseFloat(element.getElementsByTagName("CLDC").item(0).getTextContent());
-					int winddirection = Integer.valueOf(element.getElementsByTagName("WNDDIR").item(0).getTextContent());
-
-					//database.insertWeahterData();
-					if(station < 500000) {
-						database.insertOceaniaData(station, cloudcoverage);
-					}
-
-					else {
-						database.insertArgentinaData(station, cloudcoverage, visibility);
-					}
-					System.out.println(date);
-				}
-			}
-
-			catch (java.lang.Exception ex) {
-				System.out.println(ex.toString());
-			}
-		}
 	}
-
-
-
-	public static Document loadXMLFromString(String xml) throws Exception
-	{
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		InputSource is = new InputSource(new StringReader(xml));
-		return builder.parse(is);
-	}
-
 
 }
