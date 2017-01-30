@@ -1,11 +1,10 @@
 <?php
 include_once 'config/db_connect.php';
 include_once 'config/functions.php';
-
 sec_session_start();
 
 if (login_check($pdo) == true) {
-    $logged = 'in';
+    header("Location: ../index.php");
 } else {
     $logged = 'out';
 }
@@ -26,6 +25,9 @@ if (login_check($pdo) == true) {
 
     <!-- Custom CSS -->
     <link href="dist/css/style.css" rel="stylesheet" type="text/css">
+    <!--alerts CSS -->
+    <link href="vendors/bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css">\
+    <script src="vendors/bower_components/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 <!--Preloader-->
@@ -56,6 +58,9 @@ if (login_check($pdo) == true) {
                                     <h6 class="panel-title txt-dark">Sign In<?php
                                         if (isset($_GET['error'])) {
                                             echo 'Error Logging In!';
+                                        }
+                                        if(isset($_GET['ps'])){
+                                            echo '<script>swal("Password Changed!", " Please login again", "success")</script>';
                                         }
                                         ?> </h6>
                                 </div>

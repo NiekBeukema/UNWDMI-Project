@@ -32,6 +32,34 @@ function sec_session_start() {
     session_regenerate_id(true);    // regenerated the session, delete the old one.
 }
 
+function checkexpired($pdo){
+    $query = " SELECT expired FROM users 
+            WHERE 
+                username = :username 
+        ";
+    $query_params = array(
+        ':username' => $_POST['username']
+    );
+
+    try
+    {
+        // Execute the query against the database
+        $stmt = $pdo->prepare($query);
+        $result = $stmt->execute($query_params);
+    }
+    catch(PDOException $ex)
+    {
+        // To debug: . $ex->getMessage().
+        die();
+        header("Location: ../error.php?err=Could not connect to database (conn_login)");
+    }
+    $row = $stmt->fetch();
+
+    if($row['expired'] == 1){
+        return true;
+    }
+}
+
 function login($username, $password, $pdo) {
     $query = " SELECT id, username, password, is_admin FROM users 
             WHERE 

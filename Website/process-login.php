@@ -9,7 +9,11 @@ if (isset($_POST['username'], $_POST['password'])) {
     $password = $_POST['password']; // The hashed password.
 
     if (login($username, $password, $pdo) == true) {
-        header('Location: index.php');
+        if(checkexpired($pdo) == true){
+            header('Location: expired.php');
+        } else {
+            header('Location: index.php');
+        }
     } else {
         // Login failed
         header('Location: ../login.php?error=1');
