@@ -1,6 +1,6 @@
 
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Created by RonOS on 16-12-2016.
@@ -34,6 +34,26 @@ public class WeatherDatabaseHelper {
     public void insertArgentinaData(int stationId, Float cloudcoverage, Float visibility) {
         mySql.insertQuery("INSERT INTO argentina (stationId, visibility, cloudcoverage) VALUES(" + stationId + ", " + visibility.toString() + ", " + cloudcoverage.toString() + ")");
     }
+
+    public float getAverage(int stationId, String fieldName){
+        ResultSet result = mySql.getSelectFromQuery("SELECT * FROM argentina WHERE stationId = " + stationId);
+        float total = 0.0f;
+        int counter = 0;
+
+
+        try {
+            while(result.next()){
+                total += result.getFloat("visibility");
+                counter ++;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total / counter;
+    }
+
+
 
     public void purgeDataBase() {
         System.out.println("Purging database");

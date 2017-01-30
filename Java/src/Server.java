@@ -88,6 +88,8 @@ public class Server {
 		}
 	}
 
+
+
 	public static Document loadXMLFromString(String xml) throws Exception
 	{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -95,4 +97,6 @@ public class Server {
 		InputSource is = new InputSource(new StringReader(xml));
 		return builder.parse(is);
 	}
+
+
 }
