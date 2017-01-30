@@ -15,10 +15,16 @@ $(document).ready(function() {
             type: "post",  // method  , by default get
         }
     } );
-    $('#visibility').DataTable( {
+    $('#argentina-rt').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             'csv', 'excel', 'pdf', 'print'
-        ]
+        ],
+        processing: true,
+        serverSide: true,
+        "ajax":{
+            url :"config/datatable-arg.php", // json datasource
+            type: "post",  // method  , by default get
+        }
     } );
 } );

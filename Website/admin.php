@@ -2,6 +2,7 @@
 //TODO voeg is_admin validation toe aan deze pagina
 require_once('config/functions.php');
 require_once('config/register.inc.php');
+sec_session_start()
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,14 +37,18 @@ require_once('config/register.inc.php');
     <div class="la-anim-1"></div>
 </div>
 <!-- /Preloader -->
+
+<?php
+if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
+
 <div class="wrapper">
     <!-- Top Menu Items -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <a id="toggle_nav_btn" class="toggle-left-nav-btn inline-block mr-20 pull-left" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
-        <a href="index.html"><img class="brand-img pull-left" src="logo.png" alt="brand"/></a>
+        <a href="index.php"><img class="brand-img pull-left" src="logo.png" alt="brand"/></a>
         <ul class="nav navbar-right top-nav pull-right">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown">Kermit de Kikker</a>
+                <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown"><?php echo htmlentities($_SESSION['username']); ?></a>
                 <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                     <li>
                         <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -210,7 +215,7 @@ require_once('config/register.inc.php');
         <footer class="footer container-fluid pl-30 pr-30">
             <div class="row">
                 <div class="col-sm-5">
-                    <a href="index.html" class="brand mr-30"><img src="logo.png" alt="logo"/></a>
+                    <a href="#" class="brand mr-30"><img src="logo.png" alt="logo"/></a>
                     <ul class="footer-link nav navbar-nav">
                         <li class="logo-footer"><a href="#">help</a></li>
                     </ul>
@@ -227,7 +232,42 @@ require_once('config/register.inc.php');
 
 </div>
 <!-- /#wrapper -->
+<?php else : ?>
+    <div class="wrapper pa-0">
 
+        <!-- Main Content -->
+        <div class="page-wrapper pa-0 ma-0">
+            <div class="container-fluid">
+                <!-- Row -->
+                <div class="table-struct full-width full-height">
+                    <div class="table-cell vertical-align-middle">
+                        <div class="auth-form  ml-auto mr-auto no-float">
+                            <div class="panel panel-default card-view mb-0">
+                                <div class="panel-wrapper collapse in">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-xs-12 text-center">
+                                                <h3 class="mb-20 txt-danger">Unauthorized</h3>
+                                                <p class="font-18 txt-dark mb-15">You're not allowed to view this page!</p>
+                                                <p>Try logging in</p>
+                                                <a class="btn btn-success btn-icon right-icon btn-rounded mt-30" href="login.php"><span>Sign In</span><i class="fa fa-space-shuttle"></i></a>
+                                                <p class="font-12 mt-15">If you believe this is an error, then please contact a system administrator.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Row -->
+            </div>
+
+        </div>
+        <!-- /Main Content -->
+
+    </div>
+<?php endif; ?>
 <!-- JavaScript -->
 
 <!-- jQuery -->

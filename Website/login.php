@@ -55,7 +55,7 @@ if (login_check($pdo) == true) {
                                 <div class="pull-left">
                                     <h6 class="panel-title txt-dark">Sign In<?php
                                         if (isset($_GET['error'])) {
-                                            echo '<p>Error Logging In!</p>';
+                                            echo 'Error Logging In!';
                                         }
                                         ?> </h6>
                                 </div>

@@ -33,7 +33,7 @@ function sec_session_start() {
 }
 
 function login($username, $password, $pdo) {
-    $query = " SELECT id, username, password FROM users 
+    $query = " SELECT id, username, password, is_admin FROM users 
             WHERE 
                 username = :username 
         ";
@@ -61,6 +61,7 @@ function login($username, $password, $pdo) {
             $user_id = $row['id'];
             $db_password = $row['password'];
             $username = $row['username'];
+            $is_admin = $row['is_admin'];
             // If the user exists we check if the account is locked
             // from too many login attempts
 
@@ -73,7 +74,7 @@ function login($username, $password, $pdo) {
                 // Check if the password in the database matches
                 // the password the user submitted. We are using
                 // the password_verify function to avoid timing attacks.
-                if (password_verify($password, $row['password'])) {
+                if (password_verify($password, $db_password)) {
                     // Password is correct!
                     // Get the user-agent string of the user.
                     $user_browser = $_SERVER['HTTP_USER_AGENT'];
@@ -85,6 +86,7 @@ function login($username, $password, $pdo) {
                         "",
                         $username);
                     $_SESSION['username'] = $username;
+                    $_SESSION['is_admin'] = $is_admin;
                     $_SESSION['login_string'] = hash('sha512',
                         $db_password . $user_browser);
                     // Login successful.
@@ -194,6 +196,7 @@ function login_check($pdo) {
 
         $user_id = $_SESSION['user_id'];
         $login_string = $_SESSION['login_string'];
+        $is_admin = $_SESSION['is_admin'];
 
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
