@@ -13,9 +13,8 @@ import org.xml.sax.InputSource;
 public class Server {
 	
 	public static void main(String args[]) throws IOException {
-		Receiver receiver = new Receiver(7789, "127.0.0.1", 3306, "root", "vtl54711", "iica");
-		receiver.receive();
-		receiver.write();
+		Receiver receiver = new Receiver(7789, "127.0.0.1", 3306, "", "root", "iica");
+		receiver.run();
 
 	}
 

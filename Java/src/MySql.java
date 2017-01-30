@@ -31,7 +31,6 @@ public class MySql {
             System.out.println(ex.toString());
             return null;
         }
-
     }
 
     public String getStringFromQuery(String query, int index) {

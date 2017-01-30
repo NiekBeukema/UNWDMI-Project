@@ -27,20 +27,18 @@ public class WeatherDatabaseHelper {
 
     }
 
-    public void insertOceaniaData(int stationId, Float cloudcoverage) {
-        mySql.insertQuery("INSERT INTO oceania (stationId, cloudcoverage) VALUES(" + stationId + ", " + cloudcoverage.toString() + ")");
+    public void insertOceaniaData(int stationId, Float cloudcoverage, String date) {
+        mySql.insertQuery("INSERT INTO oceania (date, stationId, cloudcoverage) VALUES('" + date + "', " + stationId + ", " + cloudcoverage.toString() + ")");
     }
 
-    public void insertArgentinaData(int stationId, Float cloudcoverage, Float visibility) {
-        mySql.insertQuery("INSERT INTO argentina (stationId, visibility, cloudcoverage) VALUES(" + stationId + ", " + visibility.toString() + ", " + cloudcoverage.toString() + ")");
+    public void insertArgentinaData(int stationId, Float cloudcoverage, Float visibility, String date) {
+        mySql.insertQuery("INSERT INTO argentina (date, stationId, visibility, cloudcoverage) VALUES('" +  date + "', "  + stationId + ", " + visibility.toString() + ", " + cloudcoverage.toString() + ")");
     }
 
-    public float getAverage(int stationId, String fieldName){
-        ResultSet result = mySql.getSelectFromQuery("SELECT * FROM argentina WHERE stationId = " + stationId);
+    public float getAverageVisibilty(int stationId, String tablename){
+        ResultSet result = mySql.getSelectFromQuery("SELECT * FROM " + tablename +  " WHERE stationId = " + stationId);
         float total = 0.0f;
         int counter = 0;
-        //IK WIL PUSHEN
-
 
         try {
             while(result.next()){
@@ -54,11 +52,28 @@ public class WeatherDatabaseHelper {
         return total / counter;
     }
 
+    public float getAverageCloudCoverage(int stationId, String tablename){
+        ResultSet result = mySql.getSelectFromQuery("SELECT * FROM " + tablename +  " WHERE stationId = " + stationId);
+        float total = 0.0f;
+        int counter = 0;
+
+        try {
+            while(result.next()){
+                total += result.getFloat("cloudcoverage");
+                counter ++;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total / counter;
+    }
+
 
 
     public void purgeDataBase() {
         System.out.println("Purging database");
-        mySql.delete("station", "", true);
-        mySql.delete("weatherdata", "", true);
+        mySql.delete("argentina", "", true);
+        mySql.delete("oceania", "", true);
     }
 }
