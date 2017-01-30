@@ -39,6 +39,7 @@ public class WeatherDatabaseHelper {
         ResultSet result = mySql.getSelectFromQuery("SELECT * FROM argentina WHERE stationId = " + stationId);
         float total = 0.0f;
         int counter = 0;
+        //IK WIL PUSHEN
 
 
         try {
