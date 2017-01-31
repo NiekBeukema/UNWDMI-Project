@@ -44,6 +44,10 @@ public class XmlWriter {
 
     }
 
+    /**
+     * This mehod reads all the data it receives. It reads and deceivers the data in the different tags and passed it to an Element . The receiving data is in xml format.
+     * @param stationId
+     */
     public void stationDataToXml(int stationId) {
         try {
 
@@ -92,6 +96,9 @@ public class XmlWriter {
         }
     }
 
+    /**
+     * This method clears the document which is used to read the data given from the client.
+     */
     public void purgeDocument() {
         doc = null;
     }

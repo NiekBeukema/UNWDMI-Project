@@ -33,6 +33,12 @@ public class MySql {
         }
     }
 
+    /**
+     * This method executes an query and returns a Resultset.
+     * @param query
+     * @param index
+     * @return
+     */
     public String getStringFromQuery(String query, int index) {
         try {
             Statement stmt = connection.createStatement();
@@ -51,6 +57,12 @@ public class MySql {
 
     }
 
+    /**
+     * This method executes a query and returns a Resultset.
+     * @param query
+     * @param index
+     * @return
+     */
     public int getIntFromQuery(String query, int index) {
         try {
             Statement stmt = connection.createStatement();
@@ -69,6 +81,12 @@ public class MySql {
 
     }
 
+    /**
+     * This method will execute a query which is
+     * @param table
+     * @param condition
+     * @param deleteAll
+     */
     public void delete(String table, String condition, Boolean deleteAll) {
         try {
             Statement stmt = connection.createStatement();
