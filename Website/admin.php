@@ -2,7 +2,12 @@
 //TODO voeg is_admin validation toe aan deze pagina
 require_once('config/functions.php');
 require_once('config/register.inc.php');
-sec_session_start()
+sec_session_start();
+
+$getUsers = $pdo->prepare("SELECT username FROM users");
+$getUsers->execute();
+$Users = $getUsers->fetchAll();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -155,26 +160,6 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                                                 </button>
                                             </div>
                                         </div>
-                                    </form>
-                                    <?php
-
-                                        // Debug, Debug Debug //
-
-//                                        if(isset($_POST['createUser'])) {
-//                                            echo '<pre>';
-//                                            echo print_r($_POST);
-//                                            echo '</pre>';
-//                                        }
-
-//                                        if(isset($_POST['submit'])) {
-//                                            $test = $db->prepare('Select * from weatherdata limit 2');
-//                                            $test->execute();
-//                                            $result = $test->fetchAll();
-//                                            echo '<pre>';
-//                                            echo print_r($result);
-//                                            echo '</pre>';
-//                                        }
-                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -191,13 +176,16 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                             </div>
                             <div class="panel-wrapper collapse in">
                                 <div class="panel-body">
-                                    <form action="#">
+                                    <form action="#" id="modifyUser">
                                         <div class="form-group">
                                             <label class="control-label mb-10">Select box</label>
-                                            <select class="selectpicker" data-style="form-control">
-                                                <option>Mustard</option>
-                                                <option>Ketchup</option>
-                                                <option>Relish</option>
+                                            <select onchange="document.getElementById('modifyUser').submit();" class="selectpicker" data-style="form-control">
+                                                <?php
+                                                    //TODO: Wordt aan gewerkt maar snap het nu ff niet helemaal
+                                                    foreach($Users as $user) {
+                                                        echo "<option>".$user['username']."</option>";
+                                                    }
+                                                ?>
                                             </select>
                                     </form>
                                 </div>
