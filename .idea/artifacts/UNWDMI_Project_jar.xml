@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="UNWDMI-Project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UNWDMI_Project_jar</output-path>
+    <root id="archive" name="UNWDMI-Project.jar">
+      <element id="module-output" name="UNWDMI-Project" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/Java/Modules/mysql-connector-java-5.0.8-bin.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
