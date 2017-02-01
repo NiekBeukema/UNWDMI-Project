@@ -16,6 +16,11 @@ public class Server {
 		Receiver receiver = new Receiver(7789, "127.0.0.1", 3306, "", "root", "unwdmi");
 		receiver.run();
 
+
+		//Allow averages of all stations to be calculated and inserted at interval.
+		averageThread avg = new averageThread();
+		avg.run();
+
 	}
 
 }
