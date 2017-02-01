@@ -1,7 +1,7 @@
 <?php
 include_once 'config/db_connect.php';
 include_once 'config/functions.php';
-//include 'config/flotchart.php';
+//include 'config/vischart.php';
 sec_session_start();
 
 ?>
@@ -18,6 +18,7 @@ sec_session_start();
     <!-- Data table CSS -->
     <link href="vendors/bower_components/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
     <link href="vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css" rel="stylesheet" type="text/css">
+    <link href=vendors/bower_components/vis/vis.min.css rel="stylesheet" type="text/css">
 
     <!-- Custom CSS -->
     <link href="dist/css/style.css" rel="stylesheet" type="text/css">
@@ -111,23 +112,22 @@ if (login_check($pdo) == true) : ?>
             </div>
 
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-sm-12">
                     <div class="panel panel-default card-view">
                         <div class="panel-heading">
                             <div class="pull-left">
-                                <h6 class="panel-title txt-dark"><i class="icon-graph mr-10"></i>line Chart</h6>
+                                <h6 class="panel-title txt-dark">Coverage Graph</h6>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-wrapper collapse in">
                             <div class="panel-body">
-                                <div class="flot-container" style="height:200px">
+                                <div class="table-responsive">
                                     <div id="cloudchart" class="demo-placeholder"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                     <div class="col-sm-12">
                     <div class="panel panel-default card-view">
                         <div class="panel-heading">
@@ -260,15 +260,9 @@ if (login_check($pdo) == true) : ?>
 <script src="vendors/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
 
 <!-- Flot Charts JavaScript -->
-<script src="vendors/bower_components/Flot/excanvas.min.js"></script>
-<script src="vendors/bower_components/Flot/jquery.flot.js"></script>
-<script src="vendors/bower_components/Flot/jquery.flot.pie.js"></script>
-<script src="vendors/bower_components/Flot/jquery.flot.resize.js"></script>
-<script src="vendors/bower_components/Flot/jquery.flot.time.js"></script>
-<script src="vendors/bower_components/Flot/jquery.flot.stack.js"></script>
-<script src="vendors/bower_components/Flot/jquery.flot.crosshair.js"></script>
-<script src="vendors/bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-<script src="dist/js/flot-data.js"></script>
+<script src="vendors/bower_components/vis/vis.min.js"></script>
+
+<script src="dist/js/vis-data.js"></script>
 <!-- Slimscroll JavaScript -->
 <script src="dist/js/jquery.slimscroll.js"></script>
 
