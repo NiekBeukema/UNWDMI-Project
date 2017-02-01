@@ -4,24 +4,26 @@
 
 $(document).ready(function() {
     $('#cloud').DataTable( {
-        dom: 'Bfrtip',
+        dom: 'lBfrtip',
         buttons: [
             'csv', 'excel', 'pdf', 'print'
         ],
         processing: true,
         serverSide: true,
+        lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
         "ajax":{
             url :"config/datatable.php", // json datasource
             type: "post",  // method  , by default get
         }
     } );
     $('#argentina-rt').DataTable( {
-        dom: 'Bfrtip',
+        dom: 'lBfrtip',
         buttons: [
             'csv', 'excel', 'pdf', 'print'
         ],
         processing: true,
         serverSide: true,
+        lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
         "ajax":{
             url :"config/datatable-arg.php", // json datasource
             type: "post",  // method  , by default get

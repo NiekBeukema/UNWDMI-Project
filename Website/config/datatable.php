@@ -50,7 +50,11 @@ if(!empty($requestData['search']['value']) ){
         header("Location: ../error.php?err=Could not connect to database (conn_DT_getSearched)");
     }
 } else {
-    $query = " SELECT id, stationId, cloudcoverage FROM oceania ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . "   LIMIT " . $requestData['start'] . " ," . $requestData['length'] . "  ";
+    // load all results if filter is set to: ALL (-1)
+    if($requestData['length'] != -1)
+        $query = " SELECT id, stationId, cloudcoverage FROM oceania ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . "   LIMIT " . $requestData['start'] . " ," . $requestData['length'] . "  ";
+    else
+        $query = " SELECT id, stationId, cloudcoverage FROM oceania ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'];
 
     $query_params = array();
 

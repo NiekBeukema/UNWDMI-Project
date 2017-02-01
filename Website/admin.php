@@ -174,18 +174,24 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                             </div>
                             <div class="panel-wrapper collapse in">
                                 <div class="panel-body">
-                                    <form action="#" id="modifyUser">
-                                        <div class="form-group">
-                                            <label class="control-label mb-10">Select box</label>
-                                            <select onchange="document.getElementById('modifyUser').submit();" class="selectpicker" data-style="form-control">
-                                                <?php
-                                                    //TODO: Wordt aan gewerkt maar snap het nu ff niet helemaal
-                                                    foreach($Users as $user) {
-                                                        echo "<option>".$user['username']."</option>";
-                                                    }
-                                                ?>
-                                            </select>
-                                    </form>
+                                    <table id="editUser" class="table table-hover display  pb-30" >
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Username</th>
+                                            <th>Admin</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Username</th>
+                                            <th>Admin</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -259,6 +265,40 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        var test = $('#editUser').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [],
+            columnDefs: [
+                {
+                    targets: [0],
+                    visible: false
+                },
+                {
+                    targets: [3],
+                    visible: false
+                }
+            ],
+            processing: true,
+            serverSide: true,
+            "ajax":{
+                url :"config/datatable-admin.php", // json datasource
+                type: "post",  // method  , by default get
+            }
+        } );
+
+        $('#editUser tbody').on('click', 'tr', function() {
+            console.log(test.row(this).data()[0]);
+        });
+
+    });
+
+
+
+</script>
+
 
 <!-- Data table JavaScript -->
 <script src="vendors/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
