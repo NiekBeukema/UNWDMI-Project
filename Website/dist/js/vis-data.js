@@ -8,7 +8,11 @@ $(document).ready(function() {
         type : 'POST',
         dataType : 'json',
         success : function (result) {
-            items = [{x: result[0][0], y: result[0][1]}];
+            items = [];
+            for (i=0; i < Object.keys(result).length; i++){
+                console.log("Adding Items: " + {x: result[i][0], y: result[i][1]});
+                items[i] = {x: result[i][0], y: result[i][1]};
+            }
             makeGraph(items);
         },
         error : function (obj, ovj, error) {

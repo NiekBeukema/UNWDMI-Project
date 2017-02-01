@@ -21,8 +21,5 @@ $dataset = array();
 while ($row = $stmt->fetch()) {
     $dataset[] = array($row['date'], $row['cloudcoverage']);
 }
-$visdata = array();
-foreach($dataset as $value) {
-    $visdata[] = array('date' => $value[0], 'cloudcoverage' => $value[1]);
-}
-echo json_encode($visdata);  // UP UP AND AWAY
+
+echo json_encode($dataset);  // UP UP AND AWAY
