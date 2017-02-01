@@ -3,8 +3,8 @@ var dataset;
 $(document).ready(function() {
     var items;
     $.ajax({
-
-        url : 'config/vischart.php',
+        //Doe iets met date: en cloudcoverage:
+        url : 'config/vischartini.php',
         type : 'POST',
         dataType : 'json',
         success : function (result) {
