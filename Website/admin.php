@@ -65,7 +65,7 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                     </li>
                 </ul>
             </li>
@@ -108,7 +108,7 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
         <div class="container-fluid">
 
             <!-- Title -->
-            <div class="row heading-bg  bg-red">
+            <div class="row heading-bg  bg-blue">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                     <h5 class="txt-light">User Administration</h5>
                 </div>
@@ -155,9 +155,7 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                                         </div>
                                         <div class="form-group mb-0">
                                             <div class="col-sm-2">
-                                                <button type="submit" name="createUser" class="btn btn-success">
-                                                    <span class="btn-text swal-btn-success">Submit</span>
-                                                </button>
+                                                <button type="submit" name="createUser" class="btn btn-success btn-anim"><i class="icon-rocket"></i><span class="btn-text">Add user</span></button>
                                             </div>
                                         </div>
                                 </div>
