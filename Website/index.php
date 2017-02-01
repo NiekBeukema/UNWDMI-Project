@@ -1,7 +1,9 @@
 <?php
 include_once 'config/db_connect.php';
 include_once 'config/functions.php';
+//include 'config/flotchart.php';
 sec_session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -109,7 +111,24 @@ if (login_check($pdo) == true) : ?>
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-lg-6">
+                    <div class="panel panel-default card-view">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <h6 class="panel-title txt-dark"><i class="icon-graph mr-10"></i>line Chart</h6>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-wrapper collapse in">
+                            <div class="panel-body">
+                                <div class="flot-container" style="height:200px">
+                                    <div id="cloudchart" class="demo-placeholder"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-sm-12">
                     <div class="panel panel-default card-view">
                         <div class="panel-heading">
                             <div class="pull-left">
@@ -208,7 +227,7 @@ if (login_check($pdo) == true) : ?>
 <!-- JavaScript -->
 
 <!-- jQuery -->
-<script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="vendors/bower_components/jquery/dist/jquery.js"></script>
 
 
 <!-- Bootstrap Core JavaScript -->
@@ -239,6 +258,19 @@ if (login_check($pdo) == true) : ?>
 
 <!-- Sparkline JavaScript -->
 <script src="vendors/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
+
+<!-- Flot Charts JavaScript -->
+<script src="vendors/bower_components/Flot/excanvas.min.js"></script>
+<script src="vendors/bower_components/Flot/jquery.flot.js"></script>
+<script src="vendors/bower_components/Flot/jquery.flot.pie.js"></script>
+<script src="vendors/bower_components/Flot/jquery.flot.resize.js"></script>
+<script src="vendors/bower_components/Flot/jquery.flot.time.js"></script>
+<script src="vendors/bower_components/Flot/jquery.flot.stack.js"></script>
+<script src="vendors/bower_components/Flot/jquery.flot.crosshair.js"></script>
+<script src="vendors/bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+<script src="dist/js/flot-data.js"></script>
+<!-- Slimscroll JavaScript -->
+<script src="dist/js/jquery.slimscroll.js"></script>
 
 <!-- ChartJS JavaScript -->
 <script src="vendors/chart.js/Chart.min.js"></script>
