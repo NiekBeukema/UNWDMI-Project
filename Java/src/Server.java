@@ -13,7 +13,7 @@ import org.xml.sax.InputSource;
 public class Server {
 
 	public static void main(String args[]) throws IOException {
-		Receiver receiver = new Receiver(7789, "127.0.0.1", 3306, "", "root", "unwdmi");
+		Receiver receiver = new Receiver(7789, "145.33.225.143", 3306, "zOlBAimnx9LlGsUw", "weathergen", "unwdmi");
 		receiver.run();
 
 

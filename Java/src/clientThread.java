@@ -18,7 +18,7 @@ import java.util.Date;
  */
 public class clientThread extends Thread {
     public Socket socket;
-    private MySql sql = new MySql("127.0.0.1", 3306, "iica", "", "root");
+    private MySql sql = new MySql("145.33.225.143", 3306, "unwdmi", "zOlBAimnx9LlGsUw", "weathergen");
     private WeatherDatabaseHelper database = new WeatherDatabaseHelper(sql);
     private boolean receiving = false;
     private boolean writing = true;
