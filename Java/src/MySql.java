@@ -9,6 +9,15 @@ public class MySql {
 
     Connection connection;
 
+    /**
+     * The mysql object is responsible for facilitating a connection to the Mysql database and
+     * allows for some generic methods such as select queries and insertions.
+     * @param address The adress of the database engine
+     * @param port The port of the database engine
+     * @param database The database to connect to
+     * @param username Database username
+     * @param password Database password
+     */
     public MySql(String address, int port, String database, String username, String password) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -21,6 +30,11 @@ public class MySql {
 
     }
 
+    /**
+     * This method allows the programmer to select entries from a database
+     * @param query The select query to be executed.
+     * @return A resultset is returned containing the result(s) of the query
+     */
     public ResultSet getSelectFromQuery(String query) {
         try {
             Statement stmt = connection.createStatement();
@@ -34,58 +48,10 @@ public class MySql {
     }
 
     /**
-     * This method executes an query and returns a Resultset.
-     * @param query
-     * @param index
-     * @return
-     */
-    public String getStringFromQuery(String query, int index) {
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(query);
-            while(result.next()) {
-                return result.getString(index);
-            }
-
-            return null;
-        }
-
-        catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
-        }
-
-    }
-
-    /**
-     * This method executes a query and returns a Resultset.
-     * @param query
-     * @param index
-     * @return
-     */
-    public int getIntFromQuery(String query, int index) {
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(query);
-            while(result.next()) {
-                return result.getInt(index);
-            }
-
-            return 0;
-        }
-
-        catch (Exception ex) {
-            System.out.println(ex.toString());
-            return 0;
-        }
-
-    }
-
-    /**
-     * This method will execute a query which is
-     * @param table
-     * @param condition
-     * @param deleteAll
+     * This method allows the deletion of items from a table
+     * @param table The table from which items need to be deleted
+     * @param condition A condition allow the filtering of items such as a where clause
+     * @param deleteAll The option to delete everything froma a table
      */
     public void delete(String table, String condition, Boolean deleteAll) {
         try {
@@ -100,6 +66,10 @@ public class MySql {
 
     }
 
+    /**
+     * This will execute a given insert query
+     * @param query The insert to be made
+     */
     public void insertQuery(String query) {
         try {
             Statement stmt = connection.createStatement();

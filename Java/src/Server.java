@@ -12,6 +12,12 @@ import org.xml.sax.InputSource;
 
 public class Server {
 
+
+    /**
+     * The main method for the program
+     * @param args
+     * @throws IOException
+     */
 	public static void main(String args[]) throws IOException {
 		Receiver receiver = new Receiver(7789, "jmdr.koekjesclan.nl", 3306, "j#Mo3deR!1", "root", "unwdmi");
 		receiver.run();

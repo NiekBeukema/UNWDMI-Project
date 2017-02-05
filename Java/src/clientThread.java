@@ -6,7 +6,6 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,10 +21,15 @@ public class clientThread extends Thread {
     private WeatherDatabaseHelper database = new WeatherDatabaseHelper(sql);
     private boolean receiving = false;
     private boolean writing = true;
-    private String outputPath = "Java\\src\\testfile.txt";
     private int currentStation;
     BufferedReader br;
 
+
+    /**
+     * The clientThread class is a class that represents a connected client
+     * it facilitates the parsing and writing of received data.
+     * @param socket
+     */
     public clientThread(Socket socket) {
         this.socket = socket;
         try {
@@ -38,10 +42,16 @@ public class clientThread extends Thread {
 
     }
 
+    /**
+     * This method runs the thread and starts the receiving process
+     */
     public void run() {
         receive();
     }
 
+    /**
+     * When this method is called the thread will begin to receive and parse the XML data
+      */
     public void receive() {
         if (!receiving) {
             write();
@@ -151,6 +161,9 @@ public class clientThread extends Thread {
         }
     }
 
+    /**
+     * This method enables the clientThread to write its received data to the database
+     */
     public void write() {
         if (receiving && !writing) {
             writing = true;
@@ -161,39 +174,16 @@ public class clientThread extends Thread {
         }
     }
 
-    public void stopReceiving() {
-        if(receiving) {
-            receiving = false;
-            writing = false;
-        }
-
-        else {
-            System.out.println("The receiver is already idle");
-        }
-    }
-
-    public void stopWriting() {
-        if (writing) {
-            writing = false;
-        }
-
-        else {
-            System.out.println("The receiver has already stopped writing");
-        }
-    }
-
+    /**
+     * This method is responsible for parsing each measurement to a workable document object
+     * @param xml A string containing the XML to be parsed
+     * @return returns a document that allows for parsing of data
+     * @throws Exception when invalid XML is provided it throws the exception
+     */
     public static Document loadXMLFromString(String xml) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         InputSource is = new InputSource(new StringReader(xml));
         return builder.parse(is);
-    }
-
-    public boolean isReceiving() {
-        return receiving;
-    }
-
-    public boolean isWriting() {
-        return writing;
     }
 }

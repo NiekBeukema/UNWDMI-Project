@@ -11,33 +11,39 @@ import java.util.Date;
 public class WeatherDatabaseHelper {
     MySql mySql;
 
+    /**
+     * This class makes handling project specific database operations easier for the programmer
+     * @param mysql
+     */
     public WeatherDatabaseHelper(MySql mysql) {
         this.mySql = mysql;
     }
 
-    public void insertWeahterStation(String name, String location) {
-        mySql.insertQuery("INSERT INTO Station (Name, Location) VALUES('" + name + "', '" + location + "')");
-
-    }
-
-    public void insertWeahterData(int stationID, String time, float temperature, float dewPoint, float airPressure, int visibility,
-                                  float rainfall, float snowDepth, float cloudiness, String windDirection, float windVelocity, String occurences) {
-        mySql.insertQuery("INSERT INTO weatherdata (Station_id, Time, Temperature, DewPoint, AirPressure," +
-                "Visibility, Rainfall, SnowDepth, Cloudiness, WindDirection," +
-                "WindVelocity, Occurings) VALUES(" + stationID + ",'" + time + "'," + temperature + ", " + dewPoint  + ", " +
-                airPressure + ", " + visibility + ", " + rainfall + ", " + snowDepth + ", " + cloudiness + ", '" +
-                windDirection + "', " + windVelocity + ", '" + occurences + "') ");
-
-    }
-
+    /**
+     * This query allows the insertion of Oceania's weatherdata
+     * @param stationId The station id from which the measurement originated
+     * @param cloudcoverage The measured cloudcoverage
+     * @param date The date of the measurement
+     */
     public void insertOceaniaData(int stationId, Float cloudcoverage, String date) {
         mySql.insertQuery("INSERT INTO oceania (date, stationId, cloudcoverage) VALUES('" + date + "', " + stationId + ", " + cloudcoverage.toString() + ")");
     }
 
+    /**
+     * This query allows the insertion of Argentina's weatherdata
+     * @param stationId The station id from which the measurement originated
+     * @param cloudcoverage The measured cloudcoverage
+     * @param visibility The measured visibility
+     * @param date The date of the measurement
+     */
     public void insertArgentinaData(int stationId, Float cloudcoverage, Float visibility, String date) {
         mySql.insertQuery("INSERT INTO argentina (date, stationId, visibility, cloudcoverage) VALUES('" +  date + "', "  + stationId + ", " + visibility.toString() + ", " + cloudcoverage.toString() + ")");
     }
 
+    /**
+     * This method calculates the average value of the last 24 hours of measurements
+     * and inserts it into the average database for Oceania
+     */
     public void insertAverageOceaniaData() {
         ResultSet set = mySql.getSelectFromQuery("SELECT date, cloudcoverage FROM oceania WHERE date between date_sub(now(),INTERVAL 1 DAY) AND now()");
         int counter = 0;
@@ -62,6 +68,10 @@ public class WeatherDatabaseHelper {
         mySql.insertQuery("INSERT INTO oceaniaaverage(date, cloudcoverage) VALUES('" + date + "',  " + averageCloudCoverage + ")");
     }
 
+    /**
+     * This method calculates the average value of the last 24 hours of measurements
+     * and inserts it into the average database for Argentina
+     */
     public void insertAverageArgentinaData() {
         ResultSet set = mySql.getSelectFromQuery("SELECT date, cloudcoverage, visibility FROM argentina where date between date_sub(now(),INTERVAL 1 DAY) and now()");
         int counter = 0;
@@ -87,6 +97,12 @@ public class WeatherDatabaseHelper {
         mySql.insertQuery("INSERT INTO argentinaaverage(date, cloudcoverage, visibility) VALUES('" + date + "',  " + averageCloudCoverage + ", " + averageVisibilty + ")");
     }
 
+    /**
+     * This method returns the average visibility for a given station
+     * @param stationId The station from which the average visibility must be calculated
+     * @param tablename The tablename from where the data must originate
+     * @return Returns the average in floating point format
+     */
     public float getAverageVisibilty(int stationId, String tablename){
         ResultSet result = mySql.getSelectFromQuery("SELECT * FROM " + tablename +  " WHERE stationId = " + stationId);
         float total = 0.0f;
@@ -104,6 +120,12 @@ public class WeatherDatabaseHelper {
         return total / counter;
     }
 
+    /**
+     * This method returns the average cloudcoverage for a given station
+     * @param stationId The station from which the average cloudcoverage must be calculated
+     * @param tablename The tablename from where the data must originate
+     * @return Returns the average in floating point format
+     */
     public float getAverageCloudCoverage(int stationId, String tablename){
         ResultSet result = mySql.getSelectFromQuery("SELECT * FROM " + tablename +  " WHERE stationId = " + stationId);
         float total = 0.0f;
@@ -119,13 +141,5 @@ public class WeatherDatabaseHelper {
             e.printStackTrace();
         }
         return total / counter;
-    }
-
-
-
-    public void purgeDataBase() {
-        System.out.println("Purging database");
-        mySql.delete("argentina", "", true);
-        mySql.delete("oceania", "", true);
     }
 }

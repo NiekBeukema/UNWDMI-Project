@@ -1,15 +1,6 @@
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -24,7 +15,15 @@ public class Receiver extends Thread {
     private Vector<clientThread> clients = new Vector<clientThread>();
 
 
-
+    /**
+     * The receiver object is responsible for handling all the incoming connections and logging the existing connections.
+     * @param port The portnumber to listen to
+     * @param databaseIp The IP-adres of the database to write to
+     * @param databasePort The portnumber of the database to write to
+     * @param databaseUsername The username for the databse
+     * @param databasePassword The password for the database
+     * @param databaseName The name of database to write to
+     */
     public Receiver(int port,String databaseIp, int databasePort, String databaseUsername, String databasePassword, String databaseName) {
         MySql sql = new MySql(databaseIp, databasePort, databaseName, databaseUsername, databasePassword);
         WeatherDatabaseHelper database = new WeatherDatabaseHelper(sql);
@@ -42,10 +41,16 @@ public class Receiver extends Thread {
 
     }
 
+    /**
+     * This starts the thread and starts the listering proces
+     */
     public void run() {
         listen();
     }
 
+    /**
+     * This starts listening on the serversocket in order to handle incoming connections
+     */
     public void listen() {
         new Thread("Listening Thread") {
 
