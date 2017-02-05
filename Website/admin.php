@@ -2,12 +2,16 @@
 //TODO voeg is_admin validation toe aan deze pagina
 require_once('config/functions.php');
 require_once('config/register.inc.php');
+require_once('config/deleteUser.php');
 sec_session_start();
 
-$getUsers = $pdo->prepare("SELECT username FROM users");
+$getUsers = $pdo->prepare("SELECT id, username FROM users WHERE id != :currentUser");
+$getUsers->bindParam(':currentUser', $_SESSION['user_id']);
 $getUsers->execute();
 $Users = $getUsers->fetchAll();
-
+// echo "<pre>";
+// echo print_r($_SESSION);
+// echo "</pre>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,13 +58,6 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                 <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown"><?php echo htmlentities($_SESSION['username']); ?></a>
                 <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
                         <a href="#"><i class="fa fa-fw fa-envelope"></i> Administration</a>
                     </li>
                     <li class="divider"></li>
@@ -80,10 +77,7 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                 <a  class="active" href="javascript:void(0);" data-toggle="collapse" data-target="#dashboard_dr"><i class="icon-picture mr-10"></i>Oceania <span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                 <ul id="dashboard_dr" class="collapse collapse-level-1">
                     <li>
-                        <a class="active" href="#">Realtime</a>
-                    </li>
-                    <li>
-                        <a href="#">History</a>
+                        <a class="active" href="index.php">Graph & Data</a>
                     </li>
                 </ul>
             </li>
@@ -91,10 +85,7 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                 <a href="javascript:void(0);" data-toggle="collapse" data-target="#ecom_dr"><i class="icon-picture mr-10"></i>Argentina<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                 <ul id="ecom_dr" class="collapse collapse-level-1">
                     <li>
-                        <a href="#">Realtime</a>
-                    </li>
-                    <li>
-                        <a href="#">History</a>
+                        <a href="argentina-rt.php">Data</a>
                     </li>
                 </ul>
             </li>
@@ -158,6 +149,7 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                                                 <button type="submit" name="createUser" class="btn btn-success btn-anim"><i class="icon-rocket"></i><span class="btn-text">Add user</span></button>
                                             </div>
                                         </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -168,7 +160,7 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                         <div class="panel panel-default card-view">
                             <div class="panel-heading">
                                 <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">Add / Remove Admin Privileges</h6>
+                                    <h6 class="panel-title txt-dark">User list</h6>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -197,6 +189,39 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default card-view">
+                            <div class="panel-heading">
+                                <div class="pull-left">
+                                    <h6 class="panel-title txt-dark">Remove User</h6>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="panel-wrapper collapse in">
+                                <div class="panel-body">
+                                    <form id="removeUserForm" method="post" action=""> <!-- action="config/deleteUser.php" -->
+                                        <div class="form-group">
+                                            <select name="removeSelected" class="form-control">
+                                                <option disabled selected>Select a user</option>
+                                                <?php
+                                                foreach($Users as $user) {
+                                                    echo '<option value="'.$user['id'].'">'.$user['username'].'</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-0">
+                                            <div class="col-sm-2">
+                                                <button type="button" onclick="deleteUser();"class="btn btn-success btn-anim"><i class="icon-rocket"></i><span class="btn-text">Remove user</span></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div><!-- /.container -->
             <!-- Row -->
@@ -207,7 +232,7 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
                 <div class="col-sm-5">
                     <a href="#" class="brand mr-30"><img src="logo.png" alt="logo"/></a>
                     <ul class="footer-link nav navbar-nav">
-                        <li class="logo-footer"><a href="#">help</a></li>
+                        <li class="logo-footer"><a href="#" onclick="getHelp();">help</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-7 text-right">
@@ -269,7 +294,7 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
 <script>
     $(document).ready(function(){
         var test = $('#editUser').DataTable( {
-            dom: 'Bfrtip',
+            dom: 'frtip',
             buttons: [],
             columnDefs: [
                 {
@@ -295,10 +320,25 @@ if (login_check($pdo) == true && $_SESSION['is_admin'] == true) : ?>
 
     });
 
+    function deleteUser(){
+        swal({
+            title: "Are you sure?",
+            text: "Deleting a user cannot be undone",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+            },
+            function(){
+                document.getElementById("removeUserForm").submit();
+            });
+    }
 
-
+    function getHelp() {
+        swal("Need Help?", "Please contact a website administrator");
+    }
 </script>
-
 
 <!-- Data table JavaScript -->
 <script src="vendors/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>

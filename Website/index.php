@@ -20,8 +20,18 @@ sec_session_start();
     <link href="vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css" rel="stylesheet" type="text/css">
     <link href=vendors/bower_components/vis/vis.min.css rel="stylesheet" type="text/css">
 
+    <!--alerts CSS -->
+    <link href="vendors/bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css">
+
     <!-- Custom CSS -->
     <link href="dist/css/style.css" rel="stylesheet" type="text/css">
+
+    <style>
+        #cloud_length {
+            padding-right: 15px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -45,13 +55,6 @@ if (login_check($pdo) == true) : ?>
                 <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown"><?php echo htmlentities($_SESSION['username']); ?></a>
                 <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
                         <a href="admin.php"><i class="fa fa-fw fa-envelope"></i> Administration</a>
                     </li>
                     <li class="divider"></li>
@@ -71,10 +74,7 @@ if (login_check($pdo) == true) : ?>
                 <a  class="active" href="javascript:void(0);" data-toggle="collapse" data-target="#dashboard_dr"><i class="icon-picture mr-10"></i>Oceania <span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                 <ul id="dashboard_dr" class="collapse collapse-level-1">
                     <li>
-                        <a class="active" href="#">Realtime</a>
-                    </li>
-                    <li>
-                        <a href="#">History</a>
+                        <a class="active" href="index.php">Graph & Data</a>
                     </li>
                 </ul>
             </li>
@@ -82,10 +82,7 @@ if (login_check($pdo) == true) : ?>
                 <a href="javascript:void(0);" data-toggle="collapse" data-target="#ecom_dr"><i class="icon-picture mr-10"></i>Argentina<span class="pull-right"><i class="fa fa-fw fa-angle-down"></i></span></a>
                 <ul id="ecom_dr" class="collapse collapse-level-1">
                     <li>
-                        <a href="argentina-rt.php">Realtime</a>
-                    </li>
-                    <li>
-                        <a href="#">History</a>
+                        <a class="active" href="argentina-rt.php">Data</a>
                     </li>
                 </ul>
             </li>
@@ -171,7 +168,7 @@ if (login_check($pdo) == true) : ?>
                 <div class="col-sm-5">
                     <a href="index.html" class="brand mr-30"><img src="logo.png" alt="logo"/></a>
                     <ul class="footer-link nav navbar-nav">
-                        <li class="logo-footer"><a href="#">help</a></li>
+                        <li class="logo-footer"><a href="#" onclick="getHelp();">help</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-7 text-right">
@@ -233,6 +230,12 @@ if (login_check($pdo) == true) : ?>
 <!-- Bootstrap Core JavaScript -->
 <script src="vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
+<script>
+    function getHelp() {
+        swal("Need Help?", "Please contact a website administrator");
+    }
+</script>
+
 <!-- Data table JavaScript -->
 <script src="vendors/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="vendors/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
@@ -265,6 +268,11 @@ if (login_check($pdo) == true) : ?>
 
 <!-- ChartJS JavaScript -->
 <script src="vendors/chart.js/Chart.min.js"></script>
+
+<!-- Sweet-Alert  -->
+<script src="vendors/bower_components/sweetalert/dist/sweetalert.min.js"></script>
+
+<script src="dist/js/sweetalert-data.js"></script>
 
 <!-- Init JavaScript -->
 <script src="dist/js/init.js"></script>

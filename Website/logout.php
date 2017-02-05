@@ -18,4 +18,4 @@ setcookie(session_name(),
 
 // Destroy session and redirect
 session_destroy();
-header('Location: ../login.php');
+header('Location: ./login.php');
