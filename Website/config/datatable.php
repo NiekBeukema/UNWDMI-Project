@@ -12,13 +12,13 @@ $requestData= $_REQUEST;
 $columns = array(
 // column index  => database column name
     0 => 'id',
-    1 => 'stationId',
+    1 => 'date',
     2=> 'cloudcoverage'
 );
 
 $query_params = array();
 
-$query = " SELECT id, stationId, cloudcoverage FROM oceania";
+$query = " SELECT id, date, cloudcoverage FROM oceania";
 
 $totalData = 0;
 
@@ -37,9 +37,9 @@ $totalFiltered = $totalData;
 $row = $stmt->fetch();
 
 if(!empty($requestData['search']['value']) ){
-    $query = "SELECT id, stationId, cloudcoverage
+    $query = "SELECT id, date, cloudcoverage
     FROM oceania WHERE id LIKE '".$requestData['search']['value']."%'
-    OR stationId LIKE '".$requestData['search']['value']."%'
+    OR date LIKE '".$requestData['search']['value']."%'
     OR cloudcoverage LIKE '".$requestData['search']['value']."%'";
 
     try {
@@ -52,9 +52,9 @@ if(!empty($requestData['search']['value']) ){
 } else {
     // load all results if filter is set to: ALL (-1)
     if($requestData['length'] != -1)
-        $query = " SELECT id, stationId, cloudcoverage FROM oceania ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . "   LIMIT " . $requestData['start'] . " ," . $requestData['length'] . "  ";
+        $query = " SELECT id, date, cloudcoverage FROM oceania ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . "   LIMIT " . $requestData['start'] . " ," . $requestData['length'] . "  ";
     else
-        $query = " SELECT id, stationId, cloudcoverage FROM oceania ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'];
+        $query = " SELECT id, date, cloudcoverage FROM oceania ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'];
 
     $query_params = array();
 
@@ -70,7 +70,7 @@ $data = array();
 while($row = $stmt->fetch()){
     $nestedData=array();
     $nestedData[] = $row["id"];
-    $nestedData[] = $row["stationId"];
+    $nestedData[] = $row["date"];
     $nestedData[] = $row["cloudcoverage"];
 
     $data[] = $nestedData;

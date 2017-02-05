@@ -4,6 +4,10 @@ include_once 'db_conf.php';
 
 //Some of the functions below are based on Peter Bradley's secure session code.
 
+
+/**
+ * Initias the Secure
+ */
 function sec_session_start() {
     $session_name = 'sec_session_id';   // Set a custom session name
     /*Sets the session name.
@@ -32,6 +36,10 @@ function sec_session_start() {
     session_regenerate_id(true);    // regenerated the session, delete the old one.
 }
 
+/**
+ * @param $pdo
+ * @return bool
+ */
 function checkexpired($pdo){
     $query = " SELECT expired FROM users 
             WHERE 
@@ -60,6 +68,12 @@ function checkexpired($pdo){
     }
 }
 
+/**
+ * @param $username
+ * @param $password
+ * @param $pdo
+ * @return bool
+ */
 function login($username, $password, $pdo) {
     $query = " SELECT id, username, password, is_admin FROM users 
             WHERE 
@@ -148,6 +162,11 @@ function login($username, $password, $pdo) {
     }
 }
 
+/**
+ * @param $user_id
+ * @param $pdo
+ * @return bool
+ */
 function checkbrute($user_id, $pdo) {
     // Get timestamp of current time
     $now = time();
@@ -185,6 +204,10 @@ function checkbrute($user_id, $pdo) {
     }
 }
 
+/**
+ * @param $url
+ * @return mixed|string
+ */
 function esc_url($url) {
 
     if ('' == $url) {
@@ -216,6 +239,10 @@ function esc_url($url) {
     }
 }
 
+/**
+ * @param $pdo
+ * @return bool
+ */
 function login_check($pdo) {
     //
     if (isset($_SESSION['user_id'],

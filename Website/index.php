@@ -144,14 +144,14 @@ if (login_check($pdo) == true) : ?>
                                             <thead>
                                             <tr>
                                                 <th>id</th>
-                                                <th>stationId</th>
+                                                <th>date</th>
                                                 <th>cloudcoverage</th>
                                             </tr>
                                             </thead>
                                             <tfoot>
                                             <tr>
                                                 <th>id</th>
-                                                <th>stationId</th>
+                                                <th>date</th>
                                                 <th>cloudcoverage</th>
                                             </tr>
                                             </tfoot>

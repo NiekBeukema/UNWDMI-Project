@@ -122,7 +122,7 @@ if (login_check($pdo) == true) : ?>
                                                 <thead>
                                                 <tr>
                                                     <th>id</th>
-                                                    <th>stationId</th>
+                                                    <th>date</th>
                                                     <th>cloudcoverage</th>
                                                     <th>visibility</th>
                                                 </tr>
@@ -130,7 +130,7 @@ if (login_check($pdo) == true) : ?>
                                                 <tfoot>
                                                 <tr>
                                                     <th>id</th>
-                                                    <th>stationId</th>
+                                                    <th>date</th>
                                                     <th>cloudcoverage</th>
                                                     <th>visibility</th>
                                                 </tr>
