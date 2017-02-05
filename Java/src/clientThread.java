@@ -77,21 +77,25 @@ public class clientThread extends Thread {
                     for (int i = 0; i < nList.getLength(); i++) {
                         try {
                             Element element = (Element) nList.item(i);
+
                             int station = Integer.valueOf(element.getElementsByTagName("STN").item(0).getTextContent());
                             currentStation = station;
                             String date = element.getElementsByTagName("DATE").item(0).getTextContent();
                             String time = element.getElementsByTagName("TIME").item(0).getTextContent();
-                            Float temperature = Float.parseFloat(element.getElementsByTagName("TEMP").item(0).getTextContent().replace("\"", ""));
-                            Float dewpoint = Float.parseFloat(element.getElementsByTagName("DEWP").item(0).getTextContent().replace("\"", ""));
-                            Float pressure = Float.parseFloat(element.getElementsByTagName("STP").item(0).getTextContent().replace("\"", ""));
-                            String slp = element.getElementsByTagName("SLP").item(0).getTextContent();
-                            Float visibility = Float.parseFloat(element.getElementsByTagName("VISIB").item(0).getTextContent().replace("\"", ""));
-                            Float windspeed = Float.parseFloat(element.getElementsByTagName("WDSP").item(0).getTextContent().replace("\"", ""));
-                            Float prcp = Float.parseFloat(element.getElementsByTagName("PRCP").item(0).getTextContent());
-                            Float snowdepth = Float.parseFloat(element.getElementsByTagName("SNDP").item(0).getTextContent());
-                            int frshtt = Integer.valueOf(element.getElementsByTagName("FRSHTT").item(0).getTextContent());
-                            Float cloudcoverage = Float.parseFloat(element.getElementsByTagName("CLDC").item(0).getTextContent());
-                            int winddirection = Integer.valueOf(element.getElementsByTagName("WNDDIR").item(0).getTextContent());
+                            float visibility = Float.parseFloat(element.getElementsByTagName("VISIB").item(0).getTextContent().replace("\"", ""));
+                            float cloudcoverage = Float.parseFloat(element.getElementsByTagName("CLDC").item(0).getTextContent());
+
+
+                            //Float temperature = Float.parseFloat(element.getElementsByTagName("TEMP").item(0).getTextContent().replace("\"", ""));
+                            //Float dewpoint = Float.parseFloat(element.getElementsByTagName("DEWP").item(0).getTextContent().replace("\"", ""));
+                            //Float pressure = Float.parseFloat(element.getElementsByTagName("STP").item(0).getTextContent().replace("\"", ""));
+                            //String slp = element.getElementsByTagName("SLP").item(0).getTextContent();
+                            //int winddirection = Integer.valueOf(element.getElementsByTagName("WNDDIR").item(0).getTextContent());
+                            //Float windspeed = Float.parseFloat(element.getElementsByTagName("WDSP").item(0).getTextContent().replace("\"", ""));
+                            //Float prcp = Float.parseFloat(element.getElementsByTagName("PRCP").item(0).getTextContent());
+                            //Float snowdepth = Float.parseFloat(element.getElementsByTagName("SNDP").item(0).getTextContent());
+                            //int frshtt = Integer.valueOf(element.getElementsByTagName("FRSHTT").item(0).getTextContent());
+
                             if(writing) {
                                 if (station < 500000) {
                                     database.insertOceaniaData(station, cloudcoverage, date + " " + time);

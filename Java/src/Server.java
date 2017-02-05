@@ -13,14 +13,11 @@ import org.xml.sax.InputSource;
 public class Server {
 
 	public static void main(String args[]) throws IOException {
-		Receiver receiver = new Receiver(7789, "145.33.225.143", 3306, "zOlBAimnx9LlGsUw", "weathergen", "unwdmi");
+		Receiver receiver = new Receiver(7789, "jmdr.koekjesclan.nl", 3306, "j#Mo3deR!1", "root", "unwdmi");
 		receiver.run();
-
 
 		//Allow averages of all stations to be calculated and inserted at interval.
 		averageThread avg = new averageThread();
 		avg.run();
-
 	}
-
 }
