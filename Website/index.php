@@ -259,9 +259,6 @@ if (login_check($pdo) == true) : ?>
 <!-- Sparkline JavaScript -->
 <script src="vendors/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
 
-<!-- Flot Charts JavaScript -->
-<script src="vendors/bower_components/vis/vis.min.js"></script>
-
 <script src="dist/js/vis-data.js"></script>
 <!-- Slimscroll JavaScript -->
 <script src="dist/js/jquery.slimscroll.js"></script>

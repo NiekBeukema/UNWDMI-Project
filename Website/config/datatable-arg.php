@@ -1,9 +1,6 @@
 <?php
-/*
- * Je zou bijna denken dat de example outdated is :(
- * DEZE IS ALLEEN VOOR OCEANIA - CLOUDCOVERAGE.
- * FIXME ALL SQL INJECTIONS
- * TODO allow this file to accept other oceania entries.
+/**
+ * This is the datatable code for the argentina page, to see further detailed information look at datatable.php
  */
 require_once 'db_connect.php';
 

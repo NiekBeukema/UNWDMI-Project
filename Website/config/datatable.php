@@ -1,9 +1,6 @@
 <?php
-/*
- * Je zou bijna denken dat de example outdated is :(
- * DEZE IS ALLEEN VOOR OCEANIA - CLOUDCOVERAGE.
- * FIXME ALL SQL INJECTIONS
- * TODO allow this file to accept other oceania entries.
+/**
+ * This phpfile retrieves the data from the MySQL server and returns it in a JSON array.
  */
 require_once 'db_connect.php';
 
@@ -36,6 +33,9 @@ catch(PDOException $ex)
 $totalFiltered = $totalData;
 $row = $stmt->fetch();
 
+/**
+ * This returns data from the MySQL server depending on a search request.
+ */
 if(!empty($requestData['search']['value']) ){
     $query = "SELECT id, date, cloudcoverage
     FROM oceania WHERE id LIKE '".$requestData['search']['value']."%'
@@ -66,6 +66,9 @@ if(!empty($requestData['search']['value']) ){
         header("Location: ../error.php?err=Could not connect to database (conn_DT_sendAll)");
     }
 }
+/**
+ * Add data to an array.
+ */
 $data = array();
 while($row = $stmt->fetch()){
     $nestedData=array();
@@ -76,11 +79,14 @@ while($row = $stmt->fetch()){
     $data[] = $nestedData;
 }
 
+/**
+ * Prepare JSON_data and encode it.
+ */
 $json_data = array(
     "draw"            => intval( $requestData['draw'] ),  //Requests clientside
     "recordsTotal"    => intval( $totalData ),  // Total amount of data
     "recordsFiltered" => intval( $totalFiltered ), // Total amount of data after searching, if user didn't search then $filtered = $data
     "data"            => $data   // Total data array
 );
-echo json_encode($json_data);  // UP UP AND AWAY
+echo json_encode($json_data);  // Echo's the JSON data
 ?>

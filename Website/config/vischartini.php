@@ -1,7 +1,6 @@
 <?php
 /**
- * DIT ZOU EEN SOORT VAN GOEDE JSON SHIT MOETEN STUREN DENK IK
- *
+ * This file retrieves the historical data for the graph on the oceania page
  */
 require_once 'db_connect.php';
 
@@ -22,4 +21,4 @@ while ($row = $stmt->fetch()) {
     $dataset[] = array($row['date'], $row['cloudcoverage']);
 }
 
-echo json_encode($dataset);  // UP UP AND AWAY
+echo json_encode($dataset);  // ENCODE JSON

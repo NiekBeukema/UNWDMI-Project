@@ -1,5 +1,4 @@
 <?php
-//TODO voeg is_admin validation toe aan deze pagina
 require_once('config/functions.php');
 require_once('config/register.inc.php');
 sec_session_start()

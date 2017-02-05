@@ -2,8 +2,21 @@
 include_once 'db_connect.php';
 include_once 'db_conf.php';
 require_once 'lib/random.php';
+
+
+/**
+ * Based on: https://github.com/peredurabefrog/phpSecureLogin
+ */
+
 $error = 0;
 $success = 0;
+/**
+ * Use the secure random string generator. Random_* Compatibility Library.
+ * @param $length, length of the string
+ * @param string $keyspace, what characters to use
+ * @return string, the generated string
+ * @throws Exception, if error occured
+ */
 function generate_pass(
     $length,
     $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&**()'

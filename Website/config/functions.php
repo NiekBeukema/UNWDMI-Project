@@ -2,11 +2,13 @@
 
 include_once 'db_conf.php';
 
-//Some of the functions below are based on Peter Bradley's secure session code.
+/**
+ * Based mostly on: https://github.com/peredurabefrog/phpSecureLogin
+ */
 
 
 /**
- * Initias the Secure
+ * Initias the Secure session, with httponly and https only.
  */
 function sec_session_start() {
     $session_name = 'sec_session_id';   // Set a custom session name
@@ -15,7 +17,7 @@ function sec_session_start() {
      */
     session_name($session_name);
 
-    $secure = false; //FIXME ONLY ON HTTPS
+    $secure = true; //FIXME ONLY ON HTTPS
 
     // This stops JavaScript being able to access the session id.
     $httponly = true;
@@ -37,8 +39,8 @@ function sec_session_start() {
 }
 
 /**
- * @param $pdo
- * @return bool
+ * @param $pdo, the MySQL connection
+ * @return bool, check if the user needs to change his/her password.
  */
 function checkexpired($pdo){
     $query = " SELECT expired FROM users 
@@ -69,10 +71,10 @@ function checkexpired($pdo){
 }
 
 /**
- * @param $username
- * @param $password
- * @param $pdo
- * @return bool
+ * @param $username, the entered username
+ * @param $password, the entered password
+ * @param $pdo, the MYSQL connection
+ * @return bool, true if login is succesfull, false if not.
  */
 function login($username, $password, $pdo) {
     $query = " SELECT id, username, password, is_admin FROM users 
@@ -109,9 +111,8 @@ function login($username, $password, $pdo) {
 
             if (checkbrute($user_id, $pdo) == true) {
                 // Account is locked
-                // Send an email to user saying their account is locked
-                echo 'bruteforce check fout!';
                 return false;
+                header("Location: ../error.php?err=The account is locked, please contact an administrator.");
             } else {
                 // Check if the password in the database matches
                 // the password the user submitted. We are using
@@ -163,9 +164,9 @@ function login($username, $password, $pdo) {
 }
 
 /**
- * @param $user_id
- * @param $pdo
- * @return bool
+ * @param $user_id, the id of the user
+ * @param $pdo, the MYSQL connection
+ * @return bool, if true then the account has more than 5 login attempts.
  */
 function checkbrute($user_id, $pdo) {
     // Get timestamp of current time
@@ -205,8 +206,9 @@ function checkbrute($user_id, $pdo) {
 }
 
 /**
- * @param $url
- * @return mixed|string
+ * @param $url, the URL
+ * @return mixed|string, replaces / with empty space
+ * This prevents cross-site scripting.
  */
 function esc_url($url) {
 
@@ -240,8 +242,8 @@ function esc_url($url) {
 }
 
 /**
- * @param $pdo
- * @return bool
+ * @param $pdo, the MYSQL connection
+ * @return bool, returns true if the user has already logged in.
  */
 function login_check($pdo) {
     //
